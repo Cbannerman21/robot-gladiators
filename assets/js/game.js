@@ -38,12 +38,22 @@ promptFight = promptFight.toLowerCase();
 
 // fight function (now with parameter for enemy's name)
 var fight = function(enemy) {
+  var isPlayerTurn = true;
+
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
+// if player-robot turn prompt fightOrSkip(), reset enemy-robot health, check enemy.health
+  //if not player-robot turn remove playerInfo.health, check playerInfo.health to see if player can continue
+  //after the turn if player-robot went first, run game logic for the enemy-robot attack
   while (playerInfo.health > 0 && enemy.health > 0) {
-    
-   if (fightOrSkip()) {
-     //if true leave fight by breaking loop
-     break;
+   if (isPlayerTurn) {
+    if (fightOrSkip()) {
+      //if true leave fight by breaking loop
+      break;
+    }
    }
+  
     // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
     var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
@@ -60,7 +70,8 @@ var fight = function(enemy) {
       playerInfo.money = playerInfo.money + 20;
 
       // leave while() loop since enemy is dead
-      
+      break;
+
     } else {
       window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
     }
@@ -77,11 +88,12 @@ var fight = function(enemy) {
     if (playerInfo.health <= 0) {
       window.alert(playerInfo.name + ' has died!');
       // leave while() loop if player is dead
-      
+      break;
     } else {
       window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
     }
   }
+  isPlayerTurn = !isPlayerTurn;
 };
 
 
